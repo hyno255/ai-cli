@@ -27,7 +27,7 @@ date: [current date/time]
 $ARGUMENTS
 ```
 
-This file is persistent -- it accumulates over time. Future `/ai-cli:docgen` and `/ai-cli:docusage` runs will load this file during their Phase 4 auto-review, so the same issues won't recur.
+This file is persistent -- it accumulates over time. Future `/ai-cli:doc-gen` and `/ai-cli:doc-usage` runs will load this file during their Phase 4 auto-review, so the same issues won't recur.
 
 Tell the user: "Feedback persisted to `docs/review-notes.md`. This will be checked in all future auto-reviews."
 

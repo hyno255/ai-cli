@@ -1,8 +1,8 @@
 {
   "name": "ai-cli",
-  "description": "AI-powered documentation generation, cross-service usage analysis, and doc review for codebases",
+  "description": "AI-native documentation generation, cross-service usage analysis, and doc review for codebases",
   "version": "0.1.0",
   "author": {
-    "name": "stevenqin"
+    "name": "steven"
   }
 }

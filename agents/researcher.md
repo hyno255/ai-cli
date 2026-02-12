@@ -3,7 +3,6 @@ name: researcher
 description: Read-only codebase researcher for analyzing project structure, components, APIs, and cross-service interactions. Use proactively when exploring or analyzing code.
 tools: Read, Grep, Glob, Bash
 disallowedTools: Write, Edit
-model: sonnet
 memory: project
 ---
 

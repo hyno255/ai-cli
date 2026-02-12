@@ -1,5 +1,5 @@
 ---
-name: docusage
+name: doc-usage
 description: Analyze how one service is used by another. Documents the why, how, and where of cross-service interactions including triggers, call chains, and data flow. Use when you need to understand how serviceB depends on serviceA.
 disable-model-invocation: true
 argument-hint: <serviceA-path> <serviceB-path> [additional context]
@@ -22,7 +22,7 @@ You are orchestrating a multi-phase analysis of how one service uses another. Th
 
 1. Verify both service paths exist
 2. If `.ai-doc/` doesn't exist in Service A, suggest adding `.ai-doc/` to `.gitignore`
-3. Create workspace: `$0/.ai-doc/docusage/`
+3. Create workspace: `$0/.ai-doc/doc-usage/`
 
 ---
 
@@ -33,10 +33,10 @@ You are orchestrating a multi-phase analysis of how one service uses another. Th
 Spawn a `researcher` subagent:
 
 > Analyze the public interface of the service at `$0`.
-> Read the tracing guide at `skills/docusage/tracing-guide.md` for what to look for.
+> Read the tracing guide at `skills/doc-usage/tracing-guide.md` for what to look for.
 > Additional context from the user: $ARGUMENTS
 >
-> Write your analysis to: `$0/.ai-doc/docusage/interfaces.md`
+> Write your analysis to: `$0/.ai-doc/doc-usage/interfaces.md`
 >
 > Identify and document:
 > 1. **Exported APIs**: REST endpoints, gRPC services, GraphQL queries/mutations
@@ -59,11 +59,11 @@ Spawn a `researcher` subagent:
 Spawn a `researcher` subagent:
 
 > Scan the service at `$1` (Service B) for all interactions with the service at `$0` (Service A).
-> Read the tracing guide at `skills/docusage/tracing-guide.md` for patterns to search for.
-> Also read `$0/.ai-doc/docusage/interfaces.md` to know what Service A exposes.
+> Read the tracing guide at `skills/doc-usage/tracing-guide.md` for patterns to search for.
+> Also read `$0/.ai-doc/doc-usage/interfaces.md` to know what Service A exposes.
 > Additional context from the user: $ARGUMENTS
 >
-> Write your analysis to: `$0/.ai-doc/docusage/used-by-$1/analysis.md`
+> Write your analysis to: `$0/.ai-doc/doc-usage/used-by-$1/analysis.md`
 > (Replace $1 with the service directory name, e.g., `used-by-order-service/analysis.md`)
 >
 > For each interaction found, document:
@@ -85,19 +85,19 @@ Spawn a `researcher` subagent:
 
 **Goal:** Generate the final usage documentation.
 
-Read all files in `$0/.ai-doc/docusage/`.
+Read all files in `$0/.ai-doc/doc-usage/`.
 
 Spawn a `doc-writer` subagent:
 
 > Generate usage documentation for how `$1` uses `$0`.
 >
 > **Input files:**
-> - Service A interface: `$0/.ai-doc/docusage/interfaces.md`
-> - Usage analysis: `$0/.ai-doc/docusage/used-by-<serviceB>/analysis.md`
+> - Service A interface: `$0/.ai-doc/doc-usage/interfaces.md`
+> - Usage analysis: `$0/.ai-doc/doc-usage/used-by-<serviceB>/analysis.md`
 >
 > **Templates** (use as structural guides):
-> - Usage overview: `skills/docusage/templates/usage-overview.md`
-> - Usage workflow: `skills/docusage/templates/usage-workflow-doc.md`
+> - Usage overview: `skills/doc-usage/templates/usage-overview.md`
+> - Usage workflow: `skills/doc-usage/templates/usage-workflow-doc.md`
 >
 > **Output directory:** `$0/docs/<serviceA-name>/usage/`
 >

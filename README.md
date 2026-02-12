@@ -1,11 +1,11 @@
 # ai-cli
 
-A Claude Code plugin for AI-powered documentation generation and cross-service usage analysis. No application code -- just agents, skills, and templates that leverage Claude Code's runtime.
+A Claude Code plugin for AI-native documentation generation and cross-service usage analysis. 
 
 ## What It Does
 
-- **`/ai-cli:docgen`** -- Analyze a codebase and generate docs covering architecture, workflows, and APIs
-- **`/ai-cli:docusage`** -- Analyze how one service is used by another: why, how, where, and what triggers the interactions
+- **`/ai-cli:doc-gen`** -- Analyze a codebase and generate docs covering architecture, workflows, and APIs
+- **`/ai-cli:doc-usage`** -- Analyze how one service is used by another: why, how, where, and what triggers the interactions
 - **`/ai-cli:doc-review`** -- Submit feedback on generated docs, triggering targeted research and revision
 
 ## Prerequisites
@@ -26,24 +26,24 @@ A Claude Code plugin for AI-powered documentation generation and cross-service u
 Load the plugin by pointing Claude Code at this directory:
 
 ```bash
-claude --plugin-dir /path/to/ai-cli-v3
+claude --plugin-dir /path/to/ai-cli
 ```
 
-After loading, the three skills appear as slash commands: `/ai-cli:docgen`, `/ai-cli:docusage`, and `/ai-cli:doc-review`.
+After loading, the three skills appear as slash commands: `/ai-cli:doc-gen`, `/ai-cli:doc-usage`, and `/ai-cli:doc-review`.
 
 ## Usage
 
 ### Generate Documentation
 
 ```
-/ai-cli:docgen ./path/to/service
+/ai-cli:doc-gen ./path/to/service
 ```
 
 With optional context:
 
 ```
-/ai-cli:docgen ./services/auth The OpenAPI spec is at api/openapi.yaml, focus on OAuth flows
-/ai-cli:docgen . This is a Python Django project, main app is in src/
+/ai-cli:doc-gen ./services/auth The OpenAPI spec is at api/openapi.yaml, focus on OAuth flows
+/ai-cli:doc-gen . This is a Python Django project, main app is in src/
 ```
 
 **What it does:**
@@ -57,13 +57,13 @@ With optional context:
 ### Analyze Cross-Service Usage
 
 ```
-/ai-cli:docusage ./services/auth ./services/orders
+/ai-cli:doc-usage ./services/auth ./services/orders
 ```
 
 With optional context:
 
 ```
-/ai-cli:docusage ./services/auth ./services/orders Check the event bus integration
+/ai-cli:doc-usage ./services/auth ./services/orders Check the event bus integration
 ```
 
 **What it does:**
@@ -93,11 +93,11 @@ This is a pure agent + skill plugin. There is no application code -- everything 
 ### Architecture
 
 ```
-ai-cli-v3/
+ai-cli/
 ├── .claude-plugin/plugin.json     # Plugin manifest
 ├── skills/
-│   ├── docgen/                    # /ai-cli:docgen orchestrator + templates
-│   ├── docusage/                  # /ai-cli:docusage orchestrator + templates
+│   ├── doc-gen/                    # /ai-cli:doc-gen orchestrator + templates
+│   ├── doc-usage/                  # /ai-cli:doc-usage orchestrator + templates
 │   └── doc-review/                # /ai-cli:doc-review orchestrator + checklist
 └── agents/
     ├── researcher.md              # Read-only codebase analysis
@@ -119,10 +119,10 @@ Analysis files are stored inside the service being analyzed:
 
 ```
 <service>/.ai-doc/
-├── docgen/
+├── doc-gen/
 │   ├── discovery/           # Phase 1: repo map + component list
 │   └── analysis/            # Phase 2: per-component analysis
-└── docusage/
+└── doc-usage/
     ├── interfaces.md        # Service A's public interface
     └── used-by-<serviceB>/  # How B uses A
 ```
@@ -130,7 +130,3 @@ Analysis files are stored inside the service being analyzed:
 Add `.ai-doc/` to your `.gitignore` -- these are intermediate working files.
 
 Review notes live at `docs/review-notes.md` alongside the generated docs, where users can see and edit them directly.
-
-## Detailed Plan
-
-See [plan/architecture.md](plan/architecture.md) for the full architecture plan including diagrams, overflow protocol details, and review architecture.

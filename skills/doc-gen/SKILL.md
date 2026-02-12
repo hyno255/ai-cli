@@ -1,5 +1,5 @@
 ---
-name: docgen
+name: doc-gen
 description: Generate comprehensive documentation for a codebase. Analyzes project structure, workflows, and APIs, then produces well-structured docs. Use when you need to document a repo or service.
 disable-model-invocation: true
 argument-hint: <path> [additional context]
@@ -20,7 +20,7 @@ You are orchestrating a multi-phase documentation generation process. Follow eac
 
 1. Verify the target path exists and contains code
 2. If `.ai-doc/` doesn't exist yet, suggest adding `.ai-doc/` to `.gitignore`
-3. Create the workspace directory: `<target>/.ai-doc/docgen/`
+3. Create the workspace directory: `<target>/.ai-doc/do c/`
 
 ---
 
@@ -31,17 +31,17 @@ You are orchestrating a multi-phase documentation generation process. Follow eac
 Spawn a `researcher` subagent with this task:
 
 > Scan the codebase at `$0` and produce a structured inventory.
-> Read the analysis guide at `skills/docgen/analysis-guide.md` for what to look for.
+> Read the analysis guide at `skills/doc-gen/analysis-guide.md` for what to look for.
 > Additional context from the user: $ARGUMENTS
 >
 > Write two files:
-> 1. `$0/.ai-doc/docgen/discovery/repo-map.md` -- A structured overview of the repo: directory structure, tech stack, key entry points, external dependencies, architectural pattern (microservices, monolith, etc.)
-> 2. `$0/.ai-doc/docgen/discovery/components.md` -- A list of identified components/modules, one per section, with: name, path, 1-2 sentence description, and estimated complexity (small/medium/large)
+> 1. `$0/.ai-doc/doc-gen/discovery/repo-map.md` -- A structured overview of the repo: directory structure, tech stack, key entry points, external dependencies, architectural pattern (microservices, monolith, etc.)
+> 2. `$0/.ai-doc/doc-gen/discovery/components.md` -- A list of identified components/modules, one per section, with: name, path, 1-2 sentence description, and estimated complexity (small/medium/large)
 >
 > Focus on identifying the major building blocks and how they relate. Do not deep-dive into any single component yet.
 
 **After the researcher returns:**
-- Read `$0/.ai-doc/docgen/discovery/components.md`
+- Read `$0/.ai-doc/doc-gen/discovery/components.md`
 - Check for a `## OVERFLOW` section. If present, spawn additional researchers scoped to the uncovered areas
 - **Decision gate:** If fewer than ~5 components are identified, combine Phase 1 and Phase 2 by asking the researcher to also do deep analysis
 
@@ -51,15 +51,15 @@ Spawn a `researcher` subagent with this task:
 
 **Goal:** Produce detailed analysis for each identified component.
 
-Read `$0/.ai-doc/docgen/discovery/components.md` to get the list of components.
+Read `$0/.ai-doc/doc-gen/discovery/components.md` to get the list of components.
 
 For each component, spawn a `researcher` subagent (up to 4 in parallel):
 
 > Perform a deep analysis of the component at `<component-path>` within `$0`.
-> Read the analysis guide at `skills/docgen/analysis-guide.md` for the expected output format.
+> Read the analysis guide at `skills/doc-gen/analysis-guide.md` for the expected output format.
 > Additional context from the user: $ARGUMENTS
 >
-> Write your analysis to: `$0/.ai-doc/docgen/analysis/<component-name>.md`
+> Write your analysis to: `$0/.ai-doc/doc-gen/analysis/<component-name>.md`
 >
 > Cover: purpose, responsibilities, key interfaces, dependencies (in/out), participation in workflows, notable design decisions. Focus on "why" over "what". Reference code by file path and line range -- do not paste large blocks.
 
@@ -74,20 +74,20 @@ For each component, spawn a `researcher` subagent (up to 4 in parallel):
 
 **Goal:** Generate the final documentation from all analysis files.
 
-Read all files in `$0/.ai-doc/docgen/analysis/` and `$0/.ai-doc/docgen/discovery/repo-map.md`.
+Read all files in `$0/.ai-doc/doc-gen/analysis/` and `$0/.ai-doc/doc-gen/discovery/repo-map.md`.
 
 Spawn a `doc-writer` subagent:
 
 > Generate documentation for the project analyzed in `$0`.
 >
 > **Input files:**
-> - Project overview: `$0/.ai-doc/docgen/discovery/repo-map.md`
-> - Component analyses: all `.md` files in `$0/.ai-doc/docgen/analysis/`
+> - Project overview: `$0/.ai-doc/doc-gen/discovery/repo-map.md`
+> - Component analyses: all `.md` files in `$0/.ai-doc/doc-gen/analysis/`
 >
 > **Templates** (use as structural guides):
-> - Project README: `skills/docgen/templates/project-overview.md`
-> - Workflow doc: `skills/docgen/templates/workflow-doc.md`
-> - API doc: `skills/docgen/templates/api-doc.md`
+> - Project README: `skills/doc-gen/templates/project-overview.md`
+> - Workflow doc: `skills/doc-gen/templates/workflow-doc.md`
+> - API doc: `skills/doc-gen/templates/api-doc.md`
 >
 > **Output directory:** `$0/docs/`
 >
